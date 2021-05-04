@@ -72,13 +72,20 @@ class RecommendedFlowUnitTests {
     @Test
     fun `cold flow - take multiple - Android recommended - Success!`() {
         runBlocking {
-            val actual = mutableListOf<String>()
+
+            val actual = mutableListOf<String>() // Beer glass
+
+            //Given
             flow {
                 emit("test")
                 emit("test")
-            }.take(2).collect {
-                actual.add(it)
             }
+                .take(2)
+                .collect { // When
+                    actual.add(it)
+                }
+
+            // Then
             assertThat(actual).containsExactly("test", "test")
         }
     }

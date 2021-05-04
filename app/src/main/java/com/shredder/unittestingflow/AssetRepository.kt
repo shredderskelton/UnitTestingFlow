@@ -9,16 +9,16 @@ interface AssetRepository {
 }
 
 class ColdAssetRepository(emissions: List<String>) : AssetRepository {
-    override val assets: Flow<String> = emissions.asFlow()
+    override val assets = emissions.asFlow()
 }
 
-class HotAssetRepository(pushPushService: PushService) : AssetRepository {
+class HotAssetRepository(pushService: PushService) : AssetRepository {
 
     override val assets = MutableSharedFlow<String>()
 
     init {
         // Mocking a service pushing assets into the repo
-        pushPushService.push = {
+        pushService.push = {
             assets.emit(it)
         }
     }

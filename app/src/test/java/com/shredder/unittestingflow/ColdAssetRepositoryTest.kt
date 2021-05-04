@@ -2,12 +2,14 @@ package com.shredder.unittestingflow
 
 import app.cash.turbine.Event
 import app.cash.turbine.test
+import com.nhaarman.mockitokotlin2.mock
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Rule
 import org.junit.Test
 import kotlin.time.ExperimentalTime
@@ -21,7 +23,7 @@ class ColdAssetRepositoryTest {
 
     private lateinit var underTest: AssetRepository
 
-    private fun given(vararg emit: String ) {
+    private fun given(vararg emit: String) {
         underTest = ColdAssetRepository(emit.toList())
     }
 
@@ -34,7 +36,7 @@ class ColdAssetRepositoryTest {
             val actual = underTest.assets.first()
 
             //then
-            Assertions.assertThat(actual).isEqualTo("Asset1")
+            assertThat(actual).isEqualTo("Asset1")
         }
     }
 
@@ -55,7 +57,7 @@ class ColdAssetRepositoryTest {
                 .collect { actual.add(it) }
 
             //then
-            Assertions.assertThat(actual).containsExactly("Asset1", "Asset2")
+            assertThat(actual).containsExactly("Asset1", "Asset2")
         }
     }
 
@@ -71,7 +73,7 @@ class ColdAssetRepositoryTest {
                 .collect { actual.add(it) }
 
             // then
-            Assertions.assertThat(actual)
+            assertThat(actual)
                 .containsExactly("Asset1", "Asset2") // We want this to fail!
         }
     }
@@ -88,7 +90,7 @@ class ColdAssetRepositoryTest {
                 .collect { actual.add(it) }
 
             //then
-            Assertions.assertThat(actual)
+            assertThat(actual)
                 .containsExactly("Asset1", "Asset2")
         }
     }
@@ -107,8 +109,8 @@ class ColdAssetRepositoryTest {
             underTest.assets.test {
 
                 //then
-                Assertions.assertThat(expectItem()).isEqualTo("Asset1")
-                Assertions.assertThat(expectItem()).isEqualTo("Asset2")
+                assertThat(expectItem()).isEqualTo("Asset1")
+                assertThat(expectItem()).isEqualTo("Asset2")
                 expectComplete()
             }
         }
@@ -124,7 +126,7 @@ class ColdAssetRepositoryTest {
 
                 //then
                 val actual = cancelAndConsumeRemainingEvents()
-                Assertions.assertThat(actual).containsExactly(
+                assertThat(actual).containsExactly(
                     Event.Item("Asset1"),
                     Event.Item("Asset2"),
                     Event.Complete
@@ -142,8 +144,8 @@ class ColdAssetRepositoryTest {
             underTest.assets.test {
 
                 //then
-                Assertions.assertThat(expectItem()).isEqualTo("Asset1")
-                Assertions.assertThat(expectItem()).isEqualTo("Asset2")
+                assertThat(expectItem()).isEqualTo("Asset1")
+                assertThat(expectItem()).isEqualTo("Asset2")
                 expectComplete()
             }
         }
@@ -158,8 +160,8 @@ class ColdAssetRepositoryTest {
             underTest.assets.test {
 
                 //then
-                Assertions.assertThat(expectItem()).isEqualTo("Asset1")
-                Assertions.assertThat(expectItem()).isEqualTo("Asset2")
+                assertThat(expectItem()).isEqualTo("Asset1")
+                assertThat(expectItem()).isEqualTo("Asset2")
                 expectComplete()
             }
         }

@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runBlockingTest
 import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Rule
@@ -48,7 +49,7 @@ class HotAssetRepositoryTest {
             service.push("Asset1")
 
             //then
-            Assertions.assertThat(actual).isEqualTo("Asset1")
+            assertThat(actual).isEqualTo("Asset1")
         }
     }
 
@@ -62,7 +63,7 @@ class HotAssetRepositoryTest {
             service.push("Asset1")
 
             //then
-            Assertions.assertThat(actual).isEqualTo("Asset1")
+            assertThat(actual).isEqualTo("Asset1")
         }
     }
 
@@ -73,7 +74,7 @@ class HotAssetRepositoryTest {
                 //given
                 val actual = underTest.assets.first()
                 //then
-                Assertions.assertThat(actual).isEqualTo("Asset1")
+                assertThat(actual).isEqualTo("Asset1")
             }
             launch {
                 //when
@@ -94,7 +95,7 @@ class HotAssetRepositoryTest {
                 service.push("Asset2")
             }
         }
-        Assertions.assertThat(actual).containsExactly("Asset1", "Asset2")
+        assertThat(actual).containsExactly("Asset1", "Asset2")
     }
 
     @Test
@@ -110,9 +111,8 @@ class HotAssetRepositoryTest {
                 service.push("Asset3") // What about this guy!
             }
         }
-        Assertions.assertThat(actual).containsExactly("Asset1", "Asset2")
+        assertThat(actual).containsExactly("Asset1", "Asset2")
     }
-
 
     @Test
     fun `Google Recommends - Expected failure - when taking 2 but only one arrives - Test Hangs!`() {
@@ -125,7 +125,7 @@ class HotAssetRepositoryTest {
                 service.push("Asset1")
             }
         }
-        Assertions.assertThat(actual).containsExactly("Asset1", "Asset2")
+        assertThat(actual).containsExactly("Asset1", "Asset2")
     }
 
     /**
@@ -134,20 +134,18 @@ class HotAssetRepositoryTest {
 
     @Test
     fun `Turbine - when three assets are pushed, three are detected`() {
-         runBlocking {
+        runBlocking {
             launch {
                 underTest.assets.test {
                     println("Waiting for first condition...")
-                    Assertions.assertThat(expectItem()).isEqualTo("Asset1")
+                    assertThat(expectItem()).isEqualTo("Asset1")
                     println("First condition passed")
                     println("Waiting for second condition...")
-                    Assertions.assertThat(expectItem()).isEqualTo("Asset2")
+                    assertThat(expectItem()).isEqualTo("Asset2")
                     println("Second condition passed")
                     println("Waiting for third condition...")
-                    Assertions.assertThat(expectItem()).isEqualTo("Asset3")
+                    assertThat(expectItem()).isEqualTo("Asset3")
                     println("Third condition passed")
-                    println("Expecting compolete")
-                    expectComplete()
                 }
             }
             launch {
@@ -160,26 +158,24 @@ class HotAssetRepositoryTest {
             }
         }
     }
+
     @Test
     fun `Turbine - Expected Failure - when four assets are pushed, but three are expected`() {
-         runBlocking {
-           launch {
+        runBlocking {
+            launch {
                 underTest.assets.test {
                     println("Waiting for first condition...")
-                    Assertions.assertThat(expectItem()).isEqualTo("Asset1")
+                    assertThat(expectItem()).isEqualTo("Asset1")
                     println("First condition passed")
                     println("Waiting for second condition...")
-                    Assertions.assertThat(expectItem()).isEqualTo("Asset2")
+                    assertThat(expectItem()).isEqualTo("Asset2")
                     println("Second condition passed")
                     println("Waiting for third condition...")
-                    Assertions.assertThat(expectItem()).isEqualTo("Asset3")
+                    assertThat(expectItem()).isEqualTo("Asset3")
                     println("Third condition passed")
-                    println("Expecting complete")
-                    expectComplete()
-                    println("Complete")
                 }
             }
-          launch {
+            launch {
                 println("Pushing first")
                 service.push("Asset1")
                 println("Pushing second")
@@ -195,16 +191,16 @@ class HotAssetRepositoryTest {
     @Test
     fun `Turbine - Expected Failure - when two assets are pushed, but three are expected`() {
         runBlocking {
-            launch{
+            launch {
                 underTest.assets.test {
                     println("Waiting for first condition...")
-                    Assertions.assertThat(expectItem()).isEqualTo("Asset1")
+                    assertThat(expectItem()).isEqualTo("Asset1")
                     println("First condition passed")
                     println("Waiting for second condition...")
-                    Assertions.assertThat(expectItem()).isEqualTo("Asset2")
+                    assertThat(expectItem()).isEqualTo("Asset2")
                     println("Second condition passed")
                     println("Waiting for third condition...")
-                    Assertions.assertThat(expectItem()).isEqualTo("Asset3")
+                    assertThat(expectItem()).isEqualTo("Asset3")
                     println("Third condition passed")
                     println("Expecting complete")
                     expectComplete()
