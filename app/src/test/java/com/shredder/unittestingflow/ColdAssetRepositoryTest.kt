@@ -25,6 +25,7 @@ class ColdAssetRepositoryTest {
 
     private fun given(vararg emit: String) {
         underTest = ColdAssetRepository(emit.toList())
+//        underTest = HotAssetRepository(mock())
     }
 
     @Test

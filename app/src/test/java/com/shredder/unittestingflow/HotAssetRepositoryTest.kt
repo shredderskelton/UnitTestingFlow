@@ -190,7 +190,7 @@ class HotAssetRepositoryTest {
 
     @Test
     fun `Turbine - Expected Failure - when two assets are pushed, but three are expected`() {
-        runBlocking {
+        rule.testDispatcher.runBlockingTest {
             launch {
                 underTest.assets.test {
                     println("Waiting for first condition...")
